@@ -1,0 +1,17 @@
+<div class="hero-image">
+  <div class="hero-text">
+    <p class="display-2" style="font-weight: 500">Gallery</p>
+  </div>
+</div>
+
+<div class="container my-5 mx-auto">
+  <div class="row">
+    <div
+      class="col-lg-6 col-md-6 col-sm-6 mb-4"
+      *ngFor="let image of galleryImages"
+      (click)="openImageDialog(image)"
+    >
+      <img src="{{ image }}" class="img img-fluid rounded" />
+    </div>
+  </div>
+</div>

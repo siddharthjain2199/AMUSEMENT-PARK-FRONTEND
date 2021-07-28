@@ -1,0 +1,554 @@
+<div class="container" style="height: 20px"></div>
+
+<div class="mt-3 mb-3">
+  <div class="container-fluid">
+    <mat-tab-group mat-stretch-tabs>
+      <!-- Customers table -->
+      <mat-tab label="Customer">
+        <div class="mat-elevation-z4 container mt-5 mb-2">
+          <div class="table-title p-4">
+            <div class="row">
+              <div class="col-md-9">
+                <h2>Customer details</h2>
+              </div>
+              <div class="col-md-3">
+                <mat-form-field>
+                  <mat-label>Search by name</mat-label>
+                  <input
+                    matInput
+                    placeholder="Ex. Chandan Harayan"
+                    [(ngModel)]="customerToSearch"
+                    (keyup)="performFilterOnCustomers()"
+                    (keydown)="performFilterOnCustomers()"
+                  />
+                  <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <p class="text-center" *ngIf="dataSourceCustomer.data.length == 0">
+            No customer details found
+          </p>
+
+          <table
+            mat-table
+            [dataSource]="dataSourceCustomer"
+            *ngIf="dataSourceCustomer.data.length != 0"
+          >
+            <ng-container matColumnDef="customer id">
+              <th mat-header-cell *matHeaderCellDef>Customer Id</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.customerId }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="customer name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="col">
+                  <h6 class="mt-2">
+                    {{ element.username | titlecase }}
+                  </h6>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.email }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="address">
+              <th mat-header-cell *matHeaderCellDef>Address</th>
+              <td mat-cell *matCellDef="let element">{{ element.address }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="mobile number">
+              <th mat-header-cell *matHeaderCellDef>Mobile Number</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.mobileNumber }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="tickets">
+              <th mat-header-cell *matHeaderCellDef>Ticket Id(s)</th>
+              <td mat-cell *matCellDef="let element" style="width: 20%">
+                <p
+                  class="mt-2 py-2"
+                  *ngIf="element.tickets.length == 0"
+                >
+                  No Tickets are available
+                </p>
+                <ul
+                  class="mt-2 p-2"
+                  *ngIf="element.tickets.length > 0"
+                >
+                  <li *ngFor="let item of element.tickets">
+                    {{ item.ticketId }}
+                  </li>
+                </ul>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedCustomerColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedCustomerColumns"
+            ></tr>
+          </table>
+
+          <mat-paginator
+            #MatPaginator1
+            [pageSizeOptions]="[5, 10, 20, 30]"
+            showFirstLastButtons
+          ></mat-paginator>
+        </div>
+      </mat-tab>
+
+      <!-- Activity table -->
+      <mat-tab label="Activity">
+        <div class="mat-elevation-z4 container mt-5 mb-2">
+          <div class="table-title p-4">
+            <div class="row">
+              <div class="col-md-6">
+                <h2>Activitiy details</h2>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field>
+                  <mat-label>Search by name</mat-label>
+                  <input
+                    matInput
+                    placeholder="Ex. Go Kart"
+                    [(ngModel)]="activityToSearch"
+                    (keyup)="performFilterOnActivities()"
+                    (keydown)="performFilterOnActivities()"
+                  />
+                  <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-2">
+                <button
+                  mat-stroked-button
+                  color="primary"
+                  href="#addActivityModal"
+                  data-toggle="modal"
+                >
+                  <mat-icon>add</mat-icon> Add Activity
+                </button>
+              </div>
+            </div>
+          </div>
+          <p class="text-center" *ngIf="dataSourceActivity.data.length == 0">
+            No activity details found
+          </p>
+
+          <table
+            mat-table
+            [dataSource]="dataSourceActivity"
+            *ngIf="dataSourceActivity.data.length != 0"
+          >
+            <ng-container matColumnDef="activity id">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="width: 5%; text-align: center"
+              >
+                No.
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.activityId }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="activity name">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="width: 20%; text-align: center"
+              >
+                Name
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="col container">
+                  <img
+                    src="{{ element.imageUrl }}"
+                    alt="{{ element.activityName }}"
+                    class="img img-fluid rounded mt-2"
+                    width="250"
+                    height="250"
+                  />
+                  <h6 class="mt-2">
+                    {{ element.activityName | titlecase }}
+                  </h6>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="width: 40%; text-align: center"
+              >
+                Description
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                style="
+                  width: 45%;
+                  hyphens: auto;
+                  padding-top: 10px;
+                  padding-bottom: 10px;
+                  padding-right: 10px;
+                "
+              >
+                {{ element.description }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="charges">
+              <th mat-header-cell *matHeaderCellDef>Charges</th>
+              <td mat-cell *matCellDef="let element">
+                <b>{{ element.charges | currency: "INR" }}</b>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="edit action">
+              <th mat-header-cell *matHeaderCellDef>Action</th>
+              <td mat-cell *matCellDef="let element">
+                <div
+                  class="row"
+                  style="
+                    width: 60%;
+                    hyphens: auto;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    padding-right: 10px;
+                  "
+                >
+                  <button
+                    mat-stroked-button
+                    color="primary"
+                    href="#editActivityModal"
+                    (click)="update(element)"
+                    class="edit"
+                    data-toggle="modal"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="remove action">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element">
+                <div
+                  class="row"
+                  style="
+                    width: 60%;
+                    hyphens: auto;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    padding-right: 10px;
+                  "
+                >
+                  <button
+                    mat-stroked-button
+                    color="warn"
+                    (click)="setClickedRow(element.activityId)"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedActivityColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedActivityColumns"
+            ></tr>
+          </table>
+
+          <mat-paginator
+            #MatPaginator2
+            [pageSizeOptions]="[5, 10, 20, 30]"
+            showFirstLastButtons
+          ></mat-paginator>
+        </div>
+      </mat-tab>
+
+      <!-- Ticket table -->
+      <mat-tab label="Tickets">
+        <div class="mat-elevation-z4 container mt-5 mb-2">
+          <div class="table-title p-4">
+            <div class="row">
+              <div class="col-md-9">
+                <h2>Ticket details</h2>
+              </div>
+              <div class="col-md-3">
+                <mat-form-field>
+                  <mat-label>Search by id</mat-label>
+                  <input
+                    matInput
+                    placeholder="Ex. 1000 (Min 4 chars)"
+                    [(ngModel)]="ticketToSearch"
+                    (keyup)="performFilterOnTickets()"
+                    (keydown)="performFilterOnTickets()"
+                  />
+                  <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <h6 class="text-center" *ngIf="dataSourceTicket.data.length == 0">
+            No tickets are available
+          </h6>
+
+          <table
+            mat-table
+            [dataSource]="dataSourceTicket"
+            *ngIf="dataSourceTicket.data.length != 0"
+          >
+            <ng-container matColumnDef="ticket id">
+              <th mat-header-cell *matHeaderCellDef style="width: 20%">
+                Ticker Id
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.ticketId }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef style="width: 20%">Date</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="col">
+                  {{ element.date | date }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="bill">
+              <th mat-header-cell *matHeaderCellDef style="width: 20%">
+                Amount
+              </th>
+              <td mat-cell *matCellDef="let element">₹ {{ element.bill }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="activities">
+              <th mat-header-cell *matHeaderCellDef style="width: 20%">
+                Activity Name(s)
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <li
+                  *ngFor="let actvitiy of element.activities"
+                  style="list-style-type: decimal; padding: 8px"
+                >
+                  {{ actvitiy.activityName | titlecase }}
+                </li>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedTicketColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedTicketColumns"
+            ></tr>
+          </table>
+
+          <mat-paginator
+            #MatPaginator3
+            [pageSizeOptions]="[5, 10, 20, 30]"
+            showFirstLastButtons
+          ></mat-paginator>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+
+<div class="container" style="height: 150px"></div>
+
+<!-- Add Activity Model -->
+<div id="addActivityModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="registrationform" (ngSubmit)="onSubmit()">
+        <div class="modal-header">
+          <h4 class="modal-title">Add Activity</h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" formControlName="activityId" />
+          <div class="form-group">
+            <label>Activity Name</label>
+            <input
+              type="text"
+              formControlName="activityName"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea
+              formControlName="description"
+              class="form-control"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label>Charges</label>
+            <input
+              type="text"
+              formControlName="charges"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Image</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="imageUrl"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Charges Details</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="chargeDetails"
+              required
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <p
+              *ngIf="
+                this.registrationform.status == 'INVALID' &&
+                this.registrationform.touched
+              "
+              style="color: red"
+            >
+              Activity details are not valid
+            </p>
+          </div>
+          <div class="row">
+            <input
+              type="button"
+              class="btn btn-default"
+              data-dismiss="modal"
+              value="Cancel"
+            />
+            <input type="submit" class="btn btn-info" value="Save" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal HTML -->
+<div id="editActivityModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="activityupdateform" (ngSubmit)="onUpdate()">
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Activity</h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" formControlName="activityId" />
+          <div class="form-group">
+            <label>Activity Name</label>
+            <input
+              type="text"
+              formControlName="activityName"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input
+              type="text"
+              formControlName="description"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Charges</label>
+            <input
+              type="text"
+              formControlName="charges"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Image</label>
+            <textarea
+              class="form-control"
+              formControlName="imageUrl"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label>Charges Details</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="chargeDetails"
+              required
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <p
+              *ngIf="
+                this.activityupdateform.status == 'INVALID' ||
+                this.registrationform.touched
+              "
+              style="color: red"
+            >
+              Activity details are not valid
+            </p>
+          </div>
+          <div class="row">
+            <input
+              type="button"
+              class="btn btn-default"
+              data-dismiss="modal"
+              value="Cancel"
+            />
+            <input type="submit" class="btn btn-info" value="Save" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

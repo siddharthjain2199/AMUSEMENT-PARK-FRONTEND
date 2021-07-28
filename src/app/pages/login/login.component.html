@@ -1,0 +1,113 @@
+<div class="container" style="height: 100px"></div>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-4 col-xl-5 my-auto">
+      <img src="/assets/login.png" class="img img-fluid" />
+    </div>
+    <div class="col-md-8 col-xl-7">
+      <div
+        class="shadow p-5 mb-5 bg-white rounded text-center"
+        *ngIf="!isLoggedIn"
+      >
+        <h2 class="mb-4" style="font-weight: 500">Welcome to Amusement Park</h2>
+        <form
+          name="form"
+          (ngSubmit)="f.form.valid && onSubmit()"
+          #f="ngForm"
+          novalidate
+        >
+          <div class="form-group">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Enter username</mat-label>
+              <input
+                matInput
+                placeholder="capg"
+                type="text"
+                name="username"
+                [(ngModel)]="form.username"
+                required
+                minlength="3"
+                maxlength="20"
+                #username="ngModel"
+              />
+              <mat-icon matPrefix>person_outline</mat-icon>
+              <mat-hint
+                ><div
+                  class="alert-danger"
+                  *ngIf="username.errors && f.submitted"
+                >
+                  <div *ngIf="username.errors.required">
+                    Username is required
+                  </div>
+                  <div *ngIf="username.errors.minlength">
+                    Username must be at least 3 characters
+                  </div>
+                  <div *ngIf="username.errors.maxlength">
+                    Username must be at most 20 characters
+                  </div>
+                </div></mat-hint
+              >
+            </mat-form-field>
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Enter password</mat-label>
+              <input
+                matInput
+                placeholder="Capgemini@123"
+                [type]="hidePass ? 'password' : 'text'"
+                name="password"
+                [(ngModel)]="form.password"
+                required
+                minlength="8"
+                #password="ngModel"
+                pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$]).{8,32}$"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="togglePassHidden()"
+              >
+                <mat-icon>{{
+                  hidePass ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+              <mat-icon matPrefix>lock_outline</mat-icon>
+              <mat-hint>
+                <div
+                  class="alert-danger"
+                  role="alert"
+                  *ngIf="password.errors && f.submitted"
+                >
+                  <div *ngIf="password.errors.required">
+                    Password is required
+                  </div>
+                  <div *ngIf="password.errors.pattern">
+                    Password must be atleast 8 chars & should have at least one
+                    uppercase and number
+                  </div>
+                </div></mat-hint
+              >
+            </mat-form-field>
+            <button mat-flat-button color="accent">Login</button>
+          </div>
+          <div class="form-group">
+            <div
+              class="alert-danger"
+              role="alert"
+              *ngIf="f.submitted && isLoginFailed"
+            >
+              Login failed: {{ errorMessage }}
+            </div>
+          </div>
+        </form>
+        Are you new here? <a [routerLink]="['/register']">Register now</a>
+      </div>
+      <div class="alert alert-success" *ngIf="isLoggedIn">
+        Logged in successfully! Go to <a [routerLink]="['/']">Home</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" style="height: 80px"></div>

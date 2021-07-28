@@ -1,0 +1,82 @@
+<div class="hero-image">
+  <div class="hero-text">
+    <p class="display-1" style="font-weight: 500">Cart</p>
+  </div>
+</div>
+<div class="container mt-3 mb-3">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="p-5" *ngIf="shoppingCartItems.length == 0">
+        <h2>
+          Your cart is waiting. Give it purpose – fill it with exciting
+          thrilling activities, and
+          <a [routerLink]="['/activities']">explore</a> the Amusement park
+        </h2>
+      </div>
+      <table
+        mat-table
+        [dataSource]="shoppingCartItems"
+        class="mat-elevation-z8 mt-5"
+        *ngIf="shoppingCartItems.length > 0"
+      >
+        <ng-container matColumnDef="activity">
+          <th mat-header-cell *matHeaderCellDef style="width: 30%">Activity</th>
+          <td mat-cell *matCellDef="let element">{{ element.activityName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="details">
+          <th mat-header-cell *matHeaderCellDef style="width: 30%">Details</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.chargeDetails }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef style="width: 30%">Price</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.charges | currency: "INR" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef style="width: 10%"></th>
+          <td mat-cell *matCellDef="let element">
+            <button
+              mat-stroked-button
+              color="warn"
+              (click)="removeFromCart(element)"
+            >
+              <mat-icon>delete</mat-icon>
+              Remove
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedCartColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedCartColumns"></tr>
+      </table>
+
+      <div class="mt-5 container text-right" *ngIf="totalAmount != 0">
+        <h2>
+          Total amount &nbsp;
+          <span class="price">{{ totalAmount | currency: "INR" }} /-</span>
+        </h2>
+      </div>
+
+      <div class="col-md-8 mx-auto mt-5 mb-5" *ngIf="totalAmount != 0">
+        <button
+          mat-raised-button
+          color="primary"
+          autofocus
+          class="btn btn-success btn-lg btn-block"
+          style="font-size: 1.2rem; font-family: Roboto; padding: 12px"
+          (click)="orderNow()"
+        >
+          Order Now
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

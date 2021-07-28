@@ -1,0 +1,38 @@
+.carousel-inner img {
+  width: 100%;
+  height: 100%;
+}
+
+.parallax {
+  background-image: url("https://cdn.jumeirah.com/-/mediadh/dh/hospitality/jumeirah/wild-wadi-waterpark/general/wildwadiwaterparkflowridersurf.jpg?h=1080&w=1620");
+
+  min-height: 50%;
+
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jumbotron {
+  background-color: white;
+  margin: 0;
+  padding: 18px;
+}
+
+.section-title-container h2 small {
+  color: #dfd8bd;
+  line-height: 1.64;
+  letter-spacing: 3px;
+  margin: 0;
+  padding-bottom: 7px;
+  text-transform: uppercase;
+}
+
+.section-title-container {
+  padding-top: 30px;
+  margin-bottom: 82px;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}

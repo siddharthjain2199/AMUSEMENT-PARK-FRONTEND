@@ -1,0 +1,146 @@
+<mat-toolbar class="mat-elevation-z8" color="primary">
+  <button mat-button [routerLink]="['/']">
+    <mat-icon>attractions</mat-icon>
+    <span style="font-size: 1.3rem">Amusement Park</span>
+  </button>
+
+  <button mat-button [routerLink]="['/activities']" routerLinkActive="active">
+    Activities
+  </button>
+  <button mat-button [routerLink]="['/gallery']" routerLinkActive="active">
+    Gallery
+  </button>
+  <button mat-button [routerLink]="['/about-us']" routerLinkActive="active">
+    About Us
+  </button>
+  <button mat-button [routerLink]="['/contact-us']" routerLinkActive="active">
+    Contact Us
+  </button>
+  <span class="example-spacer"></span>
+  <button
+    mat-button
+    [routerLink]="['/admin']"
+    routerLinkActive="active"
+    *ngIf="showAdminBoard"
+  >
+    Dashboard
+  </button>
+
+  <button
+    mat-button
+    [routerLink]="['/cart']"
+    *ngIf="!showAdminBoard"
+    matBadge="{{ noOfItemsInCart }}"
+    matBadgePosition="center"
+    matBadgeColor="accent"
+  >
+    <mat-icon>shopping_cart</mat-icon>
+    Cart
+  </button>
+  <button mat-button [routerLink]="['/login']" *ngIf="!isLoggedIn">
+    <mat-icon>person_pin</mat-icon>
+    Login/ Signup
+  </button>
+
+  <button mat-button [matMenuTriggerFor]="menu" *ngIf="isLoggedIn">
+    {{ username | titlecase }}
+    <mat-icon>keyboard_arrow_down</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button
+      mat-menu-item
+      [routerLink]="['/user']"
+      routerLinkActive="activeDropDown"
+      *ngIf="isLoggedIn"
+    >
+      My Profile
+    </button>
+
+    <button
+      mat-menu-item
+      [routerLink]="['/myorder']"
+      routerLinkActive="activeDropDown"
+      *ngIf="isLoggedIn && !showAdminBoard"
+    >
+      My Orders
+    </button>
+    <button
+      mat-button
+      *ngIf="isLoggedIn"
+      routerLinkActive="activeDropDown"
+      (click)="logout()"
+    >
+      <mat-icon>logout</mat-icon>
+      Logout
+    </button>
+  </mat-menu>
+</mat-toolbar>
+
+<router-outlet> </router-outlet>
+
+<footer class="bg-theme text-lg-start text-white">
+  <div class="container p-4">
+    <div class="row">
+      <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+        <h5 class="text-uppercase"><b>Amusement Park</b></h5>
+        <p>
+          The loudest, craziest, and the most amazing part of town. This simply
+          is not just an amusement park in City, but a world of breath-taking
+          charm. It’s a place to celebrate the smaller moments and share big
+          wonders.
+        </p>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+        <h5 class="text-uppercase">Links</h5>
+
+        <ul class="list-unstyled mb-0">
+          <li>
+            <a href="/activities" class="text-light">Activities</a>
+          </li>
+          <li>
+            <a href="/gallery" class="text-light">Gallery</a>
+          </li>
+          <li>
+            <a href="/about-us" class="text-light">About Us</a>
+          </li>
+          <li>
+            <a href="/contact-us" class="text-light">Contact Us</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+        <h5 class="text-uppercase">Follow Us</h5>
+
+        <ul class="social-network social-circle">
+          <li>
+            <a href="#" class="icoFacebook" title="Facebook"
+              ><i class="fa fa-facebook"></i
+            ></a>
+          </li>
+          <li>
+            <a href="#" class="icoInstagram" title="Instagram"
+              ><i class="fa fa-instagram"></i
+            ></a>
+          </li>
+          <li>
+            <a href="#" class="icoTwitter" title="Twitter"
+              ><i class="fa fa-twitter"></i
+            ></a>
+          </li>
+          <li>
+            <a href="#" class="icoLinkedin" title="Linkedin"
+              ><i class="fa fa-linkedin"></i
+            ></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+    © 2021 Copyright
+    <a class="text-light" href="#">Amusement Park Application</a>
+  </div>
+</footer>
